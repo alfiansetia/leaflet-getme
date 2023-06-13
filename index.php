@@ -23,16 +23,21 @@
         <div id="geocoder" class="leaflet-control"></div>
 
         <br>
+        <button class="btn btn-primary" id="getme">Ambil Lokasi saya</button>
+        <br>
         <br>
         <form action="">
             <div class="row">
                 <div class="col">
+                    <label for="name">Nama Lokasi</label>
                     <input type="text" id="name" class="form-control" placeholder="Name">
                 </div>
                 <div class="col">
+                    <label for="lat">Latitude</label>
                     <input type="text" id="lat" class="form-control" placeholder="Lat">
                 </div>
                 <div class="col">
+                    <label for="long">Longitude</label>
                     <input type="text" id="long" class="form-control" placeholder="Long">
                 </div>
             </div>
@@ -49,18 +54,12 @@
 
 
     <script>
-        var map = L.map('map').setView([-6.2088, 106.8456], 13);
+        var map = L.map('map').setView([-6.599216, 106.798224], 16);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
             maxZoom: 18,
         }).addTo(map);
-
-        const search = new GeoSearch.GeoSearchControl({
-            provider: new GeoSearch.OpenStreetMapProvider(),
-        });
-
-        // map.addControl(search);
 
         var marker;
 
@@ -75,6 +74,9 @@
             });
 
         map.on('click', function(e) {
+            document.getElementById('lat').value = '';
+            document.getElementById('long').value = '';
+
             var lat = e.latlng.lat.toFixed(6);
             var lng = e.latlng.lng.toFixed(6);
 
@@ -97,7 +99,7 @@
                     }
                 });
             }
-            document.getElementById('name').value = locationName;
+            // document.getElementById('name').value = locationName;
         });
 
 
@@ -122,6 +124,14 @@
             marker = L.marker(latlng).addTo(map);
             document.getElementById('lat').value = lat;
             document.getElementById('long').value = lng;
+        });
+
+
+        document.getElementById('getme').addEventListener('click', function() {
+            map.locate({
+                setView: true,
+                maxZoom: 16
+            });
         });
 
 
